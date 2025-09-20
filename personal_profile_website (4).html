@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Personal Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="0%" fx="50%" fy="0%" r="100%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        .name {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #4f46e5;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 2px;
+        }
+
+        .about-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+            text-align: justify;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-item:hover {
+            transform: translateX(5px);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .contact-item:hover .contact-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.15);
+        }
+
+        .project-title {
+            color: #4f46e5;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .name {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card {
+            animation: fadeInUp 0.8s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <div class="header">
+                <a href="https://imgur.com/a/q6MKNBP" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/profile.jpg" alt="Profile Picture" class="profile-image" id="profileImage">
+                </a>
+                <h1 class="name">Yaasameen Perez</h1>
+                <p class="title">AI Developer | Pursuit Student | AI Enthusiast</p>
+            </div>
+
+            <div class="content">
+                <div class="section">
+                    <h2>About Me</h2>
+                    <p class="about-text">
+                        Hi, I'm Yaasameen! I'm currently a student at Pursuit, where I'm diving deep into the exciting world of artificial intelligence and its practical applications in software development.
+                        <br><br>
+                        My journey centers around mastering AI as both a learning tool and a development partner. I'm exploring how to leverage AI to build dynamic websites and mobile applications from the ground up, treating it not just as a helpful assistant, but as an integral part of my development workflow.
+                        <br><br>
+                        What fascinates me most is using AI as a coding resource – learning how to collaborate with AI to write clean, efficient code, debug complex problems, and accelerate the entire development process from initial concept to deployment. I'm discovering how AI can help me understand new programming languages faster, generate boilerplate code, and even architect solutions I might not have considered on my own.
+                        <br><br>
+                        Through Pursuit, I'm building both technical skills and the critical thinking needed to effectively prompt and guide AI tools, making me not just a developer, but someone who truly understands how to harness AI's potential to create innovative digital solutions.
+                        <br><br>
+                        I'm passionate about bridging the gap between traditional coding practices and AI-enhanced development, preparing myself for a future where human creativity and artificial intelligence work seamlessly together.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h2>Skills & Expertise</h2>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <h3>Languages</h3>
+                            <p>HTML, JavaScript, CSS</p>
+                        </div>
+                        <div class="skill-item">
+                            <h3>Programs</h3>
+                            <p>Github, Visual Studio, Claude, Gemini AI Studio, Notepad</p>
+                        </div>                        <div class="skill-item">
+                            <h3>Data Science</h3>
+                            <p>AI, Machine Learning, Predictive Modeling, Automation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Featured Projects</h2>
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <h3 class="project-title">Personal Profile Website</h3>
+                            <p class="project-description">
+                                An HTML and JavaScript based website built using Claude, featuring a single profile and overview of the users work and accomplishments
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">Claude</span>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <h3 class="project-title">Tip Calculator</h3>
+                            <p class="project-description">
+                                A simple website who's sole function is to factor how much to tip your server, built using Claude and Replit
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML</span>
+                            </div>
+                        </div>
+                        <div class="project-card">
+                            <h3 class="project-title">Km to Miles Converter</h3>
+                            <p class="project-description">
+                                A simple website who's sole function is to convert a runners race length from Km to Miles, built using Claude and Replit
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Get In Touch</h2>
+                    <div class="contact-grid">
+                        <a href="mailto:Yaasameen.Perez@pursuit.org" class="contact-item">
+                            <div class="contact-icon">✉</div>
+                            <div>
+                                <strong>Email</strong><br>
+                                Yaasameen.Perez@pursuit.org
+                            </div>
+                        </a>
+                        <a href="https://www.linkedin.com/in/yaasameenperez" class="contact-item">
+                            <div class="contact-icon">💼</div>
+                            <div>
+                                <strong>LinkedIn</strong><br>
+                                www.linkedin.com/in/yaasameenperez
+                            </div>
+                        </a>
+                        <a href="https://github.com/yaasameen-maker" class="contact-item">
+                            <div class="contact-icon">🐙</div>
+                            <div>
+                                <strong>GitHub</strong><br>
+                                https://github.com/yaasameen-maker
+                            </div>
+                        </a>
+                        <a href="https://x.com/PerezYaasa65704" class="contact-item">
+                            <div class="contact-icon">🐦</div>
+                            <div>
+                                <strong>X</strong><br>
+                                @PerezYaasa65704
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Thanks for visiting my profile! Let's connect and create something amazing together.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            // Profile image setup with repository-relative URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImg = document.getElementById('profileImage');
+            
+            // Test if the GitHub-hosted image can load
+            const testImg = new Image();
+            
+            testImg.onload = function() {
+                console.log('Image loaded successfully');
+                // Use the repository-relative path so hosted sites (like GitHub Pages) can serve it
+                profileImg.src = 'assets/profile.jpg';
+            };
+
+            testImg.onerror = function() {
+                console.log('Image failed to load from assets/profile.jpg');
+                console.log('Please check that the file exists in the assets/ folder and is committed to the repo');
+
+                // Fallback placeholder (data URL SVG)
+                profileImg.src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%234f46e5'/><stop offset='100%' stop-color='%237c3aed'/></linearGradient></defs><rect width='150' height='150' fill='url(%23grad)' rx='75'/><text x='75' y='75' text-anchor='middle' font-family='Arial, sans-serif' font-size='12' font-weight='600' fill='white'>Profile</text><text x='75' y='90' text-anchor='middle' font-family='Arial, sans-serif' font-size='12' font-weight='600' fill='white'>Image</text></svg>";
+            };
+
+            testImg.src = 'assets/profile.jpg';
+            
+            // Add smooth scrolling for any internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add intersection observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections for animation
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
